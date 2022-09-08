@@ -9,6 +9,7 @@ class DataBaseException(Exception):
 BUILTIN_TABLE_NAME = 'builtin'
 CUSTOM_TABLE_NAME = 'custom'
 
+
 base = sqlite3.connect("words.db")
 cursor = base.cursor()
 

@@ -12,12 +12,12 @@ def spell_check(word_to_check: str) -> list[str]:
 
 def find_most_fitting_words(word_to_check: str) -> list[str]:
     processed_word = Word(word_to_check)
-    stems = find_most_similar_stems(processed_word.stem)
+    base = databases.get_all_data()
+    stems = find_most_similar_stems(processed_word.stem, base)
     return [stem + processed_word.affix for stem in stems]
 
 
-def find_most_similar_stems(stem_to_check: str) -> list[str]:
-    base = databases.get_all_data()
+def find_most_similar_stems(stem_to_check: str, base: list[str]) -> list[str]:
     min_distance = sys.maxsize
     fitting_stems = []
     for stem in base:
