@@ -17,4 +17,3 @@ if __name__ == "__main__":
     print("Возможно, вы имели в виду:")
     for word in fitting_words:
         print(word)
-

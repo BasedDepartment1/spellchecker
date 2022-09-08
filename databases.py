@@ -37,4 +37,3 @@ def get_all_data(custom: bool = False) -> list[str]:
 def is_set_up() -> bool:
     content = get_all_data()
     return len(content) > 0
-

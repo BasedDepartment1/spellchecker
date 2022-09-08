@@ -29,5 +29,3 @@ def parse_words() -> list[str]:
 def find_words(text: str) -> list[str]:
     pattern = re.compile(r'[А-Яа-яёЁ]+')
     return re.findall(pattern, text)
-
-

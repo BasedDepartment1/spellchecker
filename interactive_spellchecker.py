@@ -28,5 +28,3 @@ def find_most_similar_stems(stem_to_check: str, base: list[str]) -> list[str]:
             min_distance = current_distance
             fitting_stems = [stem]
     return fitting_stems
-
-
