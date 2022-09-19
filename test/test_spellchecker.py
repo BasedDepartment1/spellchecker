@@ -35,7 +35,26 @@ class TestSpellChecker(unittest.TestCase):
         self.assertTrue(actual in expected)
 
     def test_finds_space_loss(self):
-        pass
+        base = ["всем", "привет"]
+        text = "всемпривет"
+        expected = "всем привет"
+        actual = spell_check(text, base)
+        self.assertEqual(expected, actual)
+
+    def test_finds_space_loss_and_typo(self):
+        base = ["я", "съел", "деда", "да", "дата"]
+        text = "я съел дада"
+        expected = ["я съел дада{да да,дата,деда}",
+                    "я съел дада{да да,деда,дата}"]
+        actual = spell_check(text, base)
+        self.assertTrue(actual in expected)
+
+    def test_finds_double_dash(self):
+        base = ["кое-как"]
+        text = "кое--как"
+        expected = base[0]
+        actual = spell_check(text, base)
+        self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':
