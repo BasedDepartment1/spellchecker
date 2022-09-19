@@ -1,5 +1,5 @@
 import unittest
-from levenstein_automata import matcher, levenstein_automata
+from levenstein_automata import levenstein_automata
 
 
 class AutomataTests(unittest.TestCase):
@@ -14,7 +14,7 @@ class AutomataTests(unittest.TestCase):
 
     def test_find_zero_diff_word(self):
         word = "кошка"
-        self.assertListEqual(
+        self.assertEqual(
             levenstein_automata.find_all_matches(word, self.base), [word]
         )
 
@@ -27,7 +27,8 @@ class AutomataTests(unittest.TestCase):
     def test_find_multiple_words(self):
         word = "кид"
         self.assert_contains_all(
-            levenstein_automata.find_all_matches(word, self.base), ["код", "кит"]
+            levenstein_automata.find_all_matches(word, self.base),
+            ["код", "кит"]
         )
 
 
