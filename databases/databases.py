@@ -21,7 +21,7 @@ def insert_stem(stem: str, name: TableType) -> None:
 
 
 def get_all_data_from_table(name: TableType) -> list[str]:
-    cursor.execute(f"SELECT * FROM {name} ORDER BY stem;")
+    cursor.execute(f"SELECT * FROM {name};")
     data = [stem[0] for stem in cursor.fetchall()]
     return data
 

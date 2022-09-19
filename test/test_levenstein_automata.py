@@ -6,7 +6,6 @@ class AutomataTests(unittest.TestCase):
     def setUp(self) -> None:
         self.base = ["кот", "кит", "кошка", "собака",
                      "код"]
-        self.base.sort()
 
     def assert_contains_all(self, iterable1, iterable2):
         self.assertTrue(all([i in iterable2 for i in iterable1]))

@@ -1,8 +1,7 @@
-import word
 from databases import databases
 from databases.table_type import TableType
 
-BUILTIN_PATH = r"C:\Users\bayak\spellchecker\databases\russsian_small.txt"
+BUILTIN_PATH = r"databases\russsian_small.txt"
 
 
 def generate_base(path: str = None) -> None:

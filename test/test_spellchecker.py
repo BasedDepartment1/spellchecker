@@ -5,7 +5,6 @@ from spellchecker import spell_check
 class TestSpellChecker(unittest.TestCase):
     def setUp(self) -> None:
         self.base = ["я", "съел", "деда"]
-        self.base.sort()
 
     def assert_contains_all(self, iterable1, iterable2):
         self.assertTrue(all([i in iterable2 for i in iterable1]))
@@ -29,12 +28,14 @@ class TestSpellChecker(unittest.TestCase):
 
     def test_writes_all_if_found_multiple(self):
         base = ["я", "съел", "деда", "да"]
-        base.sort()
         text = "я съел дда"
         expected = ["я съел дда{деда,да}",
                     "я съел дда{да,деда}"]
         actual = spell_check(text, base)
         self.assertTrue(actual in expected)
+
+    def test_finds_space_loss(self):
+        pass
 
 
 if __name__ == '__main__':
