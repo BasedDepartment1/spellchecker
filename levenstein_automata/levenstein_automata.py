@@ -1,7 +1,7 @@
 from levenstein_automata.nfa import NFA
 from levenstein_automata.matcher import Matcher
 
-ACCURACY = 1
+MAX_DIFFERENCE = 1
 
 
 def levenshtein_automata(term, k):
@@ -59,4 +59,7 @@ def find_all_matches(word: str, base: list[str]) -> list[str]:
       Every matching word within predetermined levenshtein
       distance from the database.
     """
-    return list(get_next_match(word, ACCURACY, base))
+    found_exact_words = list(get_next_match(word, 0, base))
+    if len(found_exact_words) > 0:
+        return [found_exact_words[0]]
+    return list(get_next_match(word, MAX_DIFFERENCE, base))
