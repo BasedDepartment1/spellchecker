@@ -1,5 +1,5 @@
 import argparse
-import base_generator
+from databases import base_generator
 import interactive_spellchecker
 
 parser = argparse.ArgumentParser()
