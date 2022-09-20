@@ -1,6 +1,12 @@
 from colorama import Fore, Style
 
 
+def clear_coloring(string: str) -> str:
+    return string\
+        .replace(Fore.RED, "")\
+        .replace(Style.RESET_ALL, "")
+
+
 def highlight_all(string: str) -> str:
     return highlight_symbol_range(string, 0, len(string))
 

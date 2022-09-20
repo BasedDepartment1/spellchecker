@@ -1,5 +1,5 @@
 import unittest
-import coloring
+from coloring import coloring
 from colorama import Fore, Style
 
 
@@ -50,6 +50,14 @@ class MyTestCase(unittest.TestCase):
         text = "123"
         colored = coloring.highlight_all(text)
         self.assertEqual(f"{Fore.RED}123{Style.RESET_ALL}", colored)
+
+    def test_clears_highlighting(self):
+        text = coloring.highlight_all("123")
+        clear = coloring.clear_coloring(text)
+        self.assertEqual("123", clear)
+        text = coloring.highlight_symbol_on_position("123", 2)
+        clear = coloring.clear_coloring(text)
+        self.assertEqual("123", clear)
 
 
 if __name__ == '__main__':
