@@ -69,5 +69,3 @@ def validate_insertion(word_to_add: str, custom: bool):
 
     if ans == "y":
         add_to_base(word_to_add, custom)
-
-
