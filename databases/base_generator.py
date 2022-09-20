@@ -1,26 +1,21 @@
-from databases import databases
+from databases.database import DataBase, DataBaseException
 from databases.table_type import TableType
 
 BUILTIN_PATH = r"databases\russsian_small.txt"
 
 
 def generate_base(path: str = None) -> None:
-    databases.try_make_tables()
     table_name = TableType.BUILTIN if path is None else TableType.CUSTOM
-    if databases.is_set_up(table_name):
-        raise databases.DataBaseException("Database already has been set up")
-    load_info(path, table_name)
+    db = DataBase(table_name)
+    if db.is_set_up():
+        raise DataBaseException("Database has been set up already!")
+    load_info(path, db)
 
 
-def load_info(path: str | None, table_name: TableType) -> None:
+def load_info(path: str | None, db: DataBase) -> None:
     actual_path = unify_path(path)
     stems = [w.lower() for w in parse_words(actual_path)]
-    load_to_database(stems, table_name)
-
-
-def load_to_database(stems: list, table_name: TableType) -> None:
-    for stem in stems:
-        databases.insert_stem(stem, table_name)
+    db.load_data(stems)
 
 
 def parse_words(path: str) -> list[str]:
