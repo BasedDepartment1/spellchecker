@@ -1,4 +1,5 @@
 import sqlite3
+from databases.table_type import TableType
 
 
 class DataBaseException(Exception):
@@ -20,7 +21,12 @@ class DataBase:
 
     def load_data(self, data: list[str]) -> None:
         for stem in data:
-            self.__insert_stem(stem)
+            self.insert_stem(stem)
+
+    def insert_stem(self, stem: str) -> None:
+        self.__cursor\
+            .execute(f"INSERT OR IGNORE INTO {self.name} VALUES(?);", (stem, ))
+        self.__base.commit()
 
     def is_set_up(self) -> bool:
         content = self.get_all_data()
@@ -30,7 +36,17 @@ class DataBase:
         self.__cursor.execute(f"""CREATE TABLE IF NOT EXISTS {self.name}(
             stem TEXT PRIMARY KEY);""")
 
-    def __insert_stem(self, stem: str) -> None:
-        self.__cursor\
-            .execute(f"INSERT OR IGNORE INTO {self.name} VALUES(?);", (stem, ))
-        self.__base.commit()
+
+def add_to_base(word: str, custom: bool):
+    table_name = get_table_name(custom)
+    db = DataBase(table_name)
+    db.insert_stem(word)
+
+
+def get_data(custom: bool) -> list[str]:
+    table_name = get_table_name(custom)
+    return DataBase(table_name).get_all_data()
+
+
+def get_table_name(custom: bool) -> str:
+    return TableType.CUSTOM if custom else TableType.BUILTIN
