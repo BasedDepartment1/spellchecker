@@ -1,6 +1,10 @@
 from colorama import Fore, Style
 
 
+def highlight_all(string: str) -> str:
+    return highlight_symbol_range(string, 0, len(string))
+
+
 def highlight_symbol_on_position(string: str, index: int) -> str:
     check_single_index(string, index)
     return highlight_symbol_range(string, index, index + 1)

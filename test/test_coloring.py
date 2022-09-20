@@ -46,6 +46,11 @@ class MyTestCase(unittest.TestCase):
         colored = coloring.highlight_all_symbols_before(text, 2)
         self.assertEqual(f"{Fore.RED}12{Style.RESET_ALL}3", colored)
 
+    def test_highlights_all(self):
+        text = "123"
+        colored = coloring.highlight_all(text)
+        self.assertEqual(f"{Fore.RED}123{Style.RESET_ALL}", colored)
+
 
 if __name__ == '__main__':
     unittest.main()
