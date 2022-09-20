@@ -1,5 +1,6 @@
 import unittest
 from spellchecker import spell_check
+from coloring.coloring import clear_coloring
 
 
 class TestSpellChecker(unittest.TestCase):
@@ -12,18 +13,18 @@ class TestSpellChecker(unittest.TestCase):
 
     def test_do_nothing_on_correct_text(self):
         text = "я съел деда"
-        actual = spell_check(text, self.base)
+        actual = clear_coloring(spell_check(text, self.base))
         self.assertEqual(text, actual)
 
     def test_do_nothing_with_signs(self):
         text = "я? съел? деда!!!"
-        actual = spell_check(text, self.base)
+        actual = clear_coloring(spell_check(text, self.base))
         self.assertEqual(text, actual)
 
     def test_replace_if_found_one(self):
         text = "я съел дда"
         expected = "я съел деда"
-        actual = spell_check(text, self.base)
+        actual = clear_coloring(spell_check(text, self.base))
         self.assertEqual(expected, actual)
 
     def test_writes_all_if_found_multiple(self):
@@ -31,14 +32,14 @@ class TestSpellChecker(unittest.TestCase):
         text = "я съел дда"
         expected = ["я съел дда{деда,да}",
                     "я съел дда{да,деда}"]
-        actual = spell_check(text, base)
+        actual = clear_coloring(spell_check(text, base))
         self.assertTrue(actual in expected)
 
     def test_finds_space_loss(self):
         base = ["всем", "привет"]
         text = "всемпривет"
         expected = "всем привет"
-        actual = spell_check(text, base)
+        actual = clear_coloring(spell_check(text, base))
         self.assertEqual(expected, actual)
 
     def test_finds_space_loss_and_typo(self):
@@ -46,14 +47,14 @@ class TestSpellChecker(unittest.TestCase):
         text = "я съел дада"
         expected = ["я съел дада{да да,дата,деда}",
                     "я съел дада{да да,деда,дата}"]
-        actual = spell_check(text, base)
+        actual = clear_coloring(spell_check(text, base))
         self.assertTrue(actual in expected)
 
     def test_finds_double_dash(self):
         base = ["кое-как"]
         text = "кое--как"
         expected = base[0]
-        actual = spell_check(text, base)
+        actual = clear_coloring(spell_check(text, base))
         self.assertEqual(expected, actual)
 
 

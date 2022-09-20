@@ -1,5 +1,6 @@
 import re
 from levenstein_automata.levenstein_automata import find_all_matches
+from coloring import coloring, diff_highlighter
 
 
 def spell_check(text_to_check: str, base: list[str])\
@@ -12,13 +13,19 @@ def spell_check(text_to_check: str, base: list[str])\
 
 def correct_errors(word, base) -> str:
     possible_words = find_most_fitting_words(word, base)
+    if len(possible_words) == 0:
+        return coloring.highlight_all(word)
     if len(possible_words) == 1:
-        return possible_words[0]
+        return diff_highlighter.highlight_difference(word, possible_words[0])
     return make_suggestion_string(word, possible_words)
 
 
 def make_suggestion_string(word, possible_words) -> str:
-    return word + "{" + ",".join(possible_words) + "}"
+    highlighted_possible_words = [
+            diff_highlighter.highlight_difference(word, w)
+            for w in possible_words
+        ]
+    return word + "{" + ",".join(highlighted_possible_words) + "}"
 
 
 def find_most_fitting_words(word_to_check: str, base: list[str]) -> list[str]:
