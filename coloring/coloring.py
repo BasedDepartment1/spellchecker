@@ -28,8 +28,8 @@ def highlight_all_symbols_before(string: str, end: int) -> str:
 
 def highlight_symbol_range(string: str, start: int, end: int) -> str:
     check_two_indices(string, start, end)
-    return string[:start] + Fore.RED \
-        + string[start:end] + Style.RESET_ALL + string[end:]
+    return string[:start] + str(Fore.RED) \
+        + string[start:end] + str(Style.RESET_ALL) + string[end:]
 
 
 def check_single_index(word: str, index):

@@ -57,6 +57,13 @@ class TestSpellChecker(unittest.TestCase):
         actual = clear_coloring(spell_check(text, base))
         self.assertEqual(expected, actual)
 
+    def test_english(self):
+        base = ["abc"]
+        text = "acc"
+        expected = base[0]
+        actual = clear_coloring(spell_check(text, base))
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()

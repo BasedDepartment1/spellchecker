@@ -3,9 +3,8 @@ from levenstein_automata.levenstein_automata import find_all_matches
 from coloring import coloring, diff_highlighter
 
 
-def spell_check(text_to_check: str, base: list[str])\
-        -> str:
-    pattern = re.compile(r"[А-Яа-яёЁ-]+")
+def spell_check(text_to_check: str, base: list[str]) -> str:
+    pattern = re.compile(r"[A-Za-zА-Яа-яёЁ-]+")
     return re.sub(pattern,
                   lambda m: correct_errors(m.group(), base),
                   text_to_check)
