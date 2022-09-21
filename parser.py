@@ -47,7 +47,7 @@ def add_spellcheck_subparser(subparsers):
                               )
 
     check_parser.set_defaults(function=lambda x:
-                              find_typos(" ".join(x.words)
+                              find_typos(x.words
                                          or x.filepath[0], x.custom))
 
 

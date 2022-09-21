@@ -1,4 +1,3 @@
-import os
 from databases.database import get_data
 from spellchecker import spell_check
 from coloring.coloring import clear_coloring
@@ -6,7 +5,7 @@ from coloring.coloring import clear_coloring
 
 def find_typos(data_to_check, custom: bool):
     base = get_data(custom)
-    if os.path.isfile(data_to_check):
+    if type(data_to_check) == str:
         spellcheck_file(data_to_check, base)
     else:
         print(spell_check(data_to_check, base))
