@@ -11,7 +11,7 @@ def spell_check(text_to_check: str, base: list[str]) -> str:
 
 
 def correct_errors(word, base) -> str:
-    possible_words = find_most_fitting_words(word, base)
+    possible_words = find_most_fitting_words(word.replace("-", ""), base)
     if len(possible_words) == 0:
         return coloring.highlight_all(word)
     if len(possible_words) == 1:

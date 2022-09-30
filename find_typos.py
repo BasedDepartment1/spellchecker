@@ -8,7 +8,7 @@ def find_typos(data_to_check, custom: bool):
     if type(data_to_check) == str:
         spellcheck_file(data_to_check, base)
     else:
-        print(spell_check(data_to_check, base))
+        print(spell_check(" ".join(data_to_check), base))
 
 
 def spellcheck_file(path, base):
