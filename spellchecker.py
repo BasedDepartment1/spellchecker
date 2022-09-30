@@ -22,7 +22,7 @@ def correct_errors(word, base) -> str:
 def make_suggestion_string(word, possible_words) -> str:
     highlighted_possible_words = [
             diff_highlighter.highlight_difference(word, w)
-            for w in possible_words
+            for w in range_words(possible_words)
         ]
     return word + "{" + ",".join(highlighted_possible_words) + "}"
 
@@ -36,6 +36,29 @@ def find_most_fitting_words(word_to_check: str, base: list[str]) -> list[str]:
     return [*list(spaced_words), *possible_words]
 
 
+def range_words(possible_words: list[str]) -> list[str]:
+    ranged_words = add_dashes_and_spaces(possible_words)
+    words_count = len(ranged_words)
+    for word in possible_words:
+        if "-" not in word and " " not in word:
+            ranged_words.append(word)
+            words_count += 1
+        if words_count > 3:
+            break
+    return ranged_words
+
+
+def add_dashes_and_spaces(possible_words: list[str]) -> list[str]:
+    ranged_words = []
+    dash_index = find_index_of_word_with_substring(possible_words, "-")
+    space_index = find_index_of_word_with_substring(possible_words, " ")
+    if dash_index >= 0:
+        ranged_words.append(possible_words[dash_index])
+    if space_index >= 0:
+        ranged_words.append(possible_words[space_index])
+    return ranged_words
+
+
 def find_space_loss(word_to_check: str, base: list[str]) -> set[str]:
     result = set()
     for i in range(1, len(word_to_check) - 1):
@@ -45,3 +68,10 @@ def find_space_loss(word_to_check: str, base: list[str]) -> set[str]:
         if len(sug1) == 1 and len(sug2) == 1:
             result.add(sug1[0] + " " + sug2[0])
     return result
+
+
+def find_index_of_word_with_substring(words: list[str], substr: str) -> int:
+    for i, word in enumerate(words):
+        if substr in word:
+            return i
+    return -1
