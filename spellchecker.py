@@ -1,10 +1,11 @@
 import re
 from levenstein_automata.levenstein_automata import find_all_matches
 from coloring import coloring, diff_highlighter
+from rules.rules import apply_rules
 
 
 def spell_check(text_to_check: str, base: list[str]) -> str:
-    pattern = re.compile(r"[A-Za-zА-Яа-яёЁ-]+")
+    pattern = re.compile(r"[1-9A-Za-zА-Яа-яёЁ-]+")
     return re.sub(pattern,
                   lambda m: correct_errors(m.group(), base),
                   text_to_check)
@@ -15,15 +16,21 @@ def correct_errors(word, base) -> str:
     if len(possible_words) == 0:
         return coloring.highlight_all(word)
     if len(possible_words) == 1:
-        return diff_highlighter.highlight_difference(word, possible_words[0])
+        return diff_highlighter.highlight_difference(
+            word, apply_rules(possible_words[0])
+        )
     return make_suggestion_string(word, possible_words)
 
 
 def make_suggestion_string(word, possible_words) -> str:
+    return format_suggestion_string(word, range_words(word, possible_words))
+
+
+def format_suggestion_string(word, possible_words):
     highlighted_possible_words = [
-            diff_highlighter.highlight_difference(word, w)
-            for w in range_words(possible_words)
-        ]
+        diff_highlighter.highlight_difference(word, w)
+        for w in possible_words
+    ]
     return word + "{" + ",".join(highlighted_possible_words) + "}"
 
 
@@ -36,7 +43,7 @@ def find_most_fitting_words(word_to_check: str, base: list[str]) -> list[str]:
     return [*list(spaced_words), *possible_words]
 
 
-def range_words(possible_words: list[str]) -> list[str]:
+def range_words(word, possible_words: list[str]) -> list[str]:
     ranged_words = add_dashes_and_spaces(possible_words)
     words_count = len(ranged_words)
     for word in possible_words:
@@ -45,7 +52,18 @@ def range_words(possible_words: list[str]) -> list[str]:
             words_count += 1
         if words_count > 3:
             break
+
+    rule_checked = apply_rules(word)
+    if rule_checked != word:
+        ranged_words.insert(0, rule_checked)
     return ranged_words
+
+
+# def check_rules(word):
+#     rule_checked = apply_rules(word)
+#     if rule_checked != word:
+#         return format_suggestion_string(word, rule_checked)
+#     return word
 
 
 def add_dashes_and_spaces(possible_words: list[str]) -> list[str]:

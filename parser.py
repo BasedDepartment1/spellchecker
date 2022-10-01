@@ -2,6 +2,7 @@ import argparse
 from find_typos import find_typos
 from databases.base_generator import generate_base
 from databases.database import add_to_base
+from rules.rules import clear_rules, set_up_custom_rules
 
 
 def parse(arguments: list[str]):
@@ -17,6 +18,7 @@ def setup_parser():
     add_database_subparser(subparsers)
     add_spellcheck_subparser(subparsers)
     add_extension_subparser(subparsers)
+    add_rule_subparser(subparsers)
     return parser
 
 
@@ -47,8 +49,7 @@ def add_spellcheck_subparser(subparsers):
                               )
 
     check_parser.set_defaults(function=lambda x:
-                              find_typos(x.words
-                                         or x.filepath[0], x.custom))
+                              find_typos(x.words or x.filepath[0], x.custom))
 
 
 def add_extension_subparser(subparsers):
@@ -62,6 +63,26 @@ def add_extension_subparser(subparsers):
                             validate_insertion(x.word, x.custom))
 
 
+def add_rule_subparser(subparsers):
+    rule_parser = subparsers.add_parser("rules")
+    rule_parser.add_argument("-c", "--clear",
+                             action="store_true",
+                             dest="clear")
+    rule_parser.add_argument("-l", "--load",
+                             dest="path",
+                             type=str)
+    rule_parser.set_defaults(function=lambda x:
+                             manage_rules(x.clear, x.path))
+
+
+def manage_rules(clear: bool, path):
+    if clear:
+        validate_rule_clear()
+        return
+    if path is not None:
+        set_up_custom_rules(path)
+
+
 def validate_insertion(word_to_add: str, custom: bool):
     table_name = "custom" if custom else "builtin"
     ans = input(f"Are you sure you want to insert word:\n{word_to_add}\ninto "
@@ -69,3 +90,9 @@ def validate_insertion(word_to_add: str, custom: bool):
 
     if ans == "y":
         add_to_base(word_to_add, custom)
+
+
+def validate_rule_clear():
+    ans = input("Are you sure you want to clear all your rules? (y/n): ")
+    if ans == "y":
+        clear_rules()
